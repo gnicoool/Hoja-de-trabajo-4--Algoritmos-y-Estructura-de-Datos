@@ -5,7 +5,7 @@ public class StackFactory {
         //Dependiendo el string enviado, crea estructura de datos lineal distinta
         switch (pila) {
             case "arraylist":
-                return new AL<>();
+                return new AL<Integer>();
             //Casos de las demás pilas AÚN SIN IMPLEMENTAR
             /* case "vector":
                 return new Vec();
@@ -14,7 +14,7 @@ public class StackFactory {
             case "listaDoble":
                 return new listaDoble(); */
             default:
-                throw new ClassNotFoundException(pila);
+                throw new ClassNotFoundException("No se encontró una clase con este nombre");
         }
     }
 }
