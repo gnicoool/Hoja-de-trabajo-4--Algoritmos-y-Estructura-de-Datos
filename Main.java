@@ -17,7 +17,7 @@ public class Main {
     static String archivo = "datos.txt";
     //Creacion de la factory para crear distintos tipos de estructuras
     static StackFactory factory = new StackFactory();
-    static Calculadora c = Calculadora.getInstance();
+    static Calculadora<Double> c = Calculadora.getInstance();
 
     
     public static void main(String[] args) throws ClassNotFoundException {
@@ -40,68 +40,74 @@ public class Main {
             //Lectura del archivo
             try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))){
                 String line;
-                //Creacion de estructura en base a la seleccion del usuario
-                IStack pila = factory.CreateStack(tipoEstructura);
-            //Ciclo para recorrer las filas con datos dentro del txt
-            while ((line = bufferedReader.readLine()) != null){
-                //Guarda los datos en un array luego de separarlos cuando encuentra espacios
-                String[] data = line.split(" ");
-                boolean error = false;
-                //Revisa dato por dato dentro de la linea a evaluar
-                for(String value : data){
-                    //Revisa si el dato es un número es positivo
-                    if(value.matches("\\d+")){
-                        pila.add(Integer.valueOf(value));
-                    }else if(value.length() == 1 && c.isOperator(value.charAt(0))){ //Es operador
-                        //Verifica si hay suficientes operandos en la pila
-                        if(pila.size() < 2){
-                            System.out.println("Error: There are not enough operands in line: " + line);
+                //Ciclo para recorrer las filas con datos dentro del txt
+                while ((line = bufferedReader.readLine()) != null){
+                    //Guarda los datos en un array luego de separarlos cuando encuentra espacios
+                    String[] data = line.split(" ");
+                    //Contador de valores positivos para usarlo como paramentro en create stack
+                    int count = 0;
+                    for(String value: data){
+                        if(value.matches("\\d+"))
+                            count++;
+                    }
+                    //Creacion de estructura en base a la seleccion del usuario
+                    IStack pila = factory.CreateStack(tipoEstructura, count);
+                    boolean error = false;
+                    //Revisa dato por dato dentro de la linea a evaluar
+                    for(String value : data){
+                        //Revisa si el dato es un número es positivo
+                        if(value.matches("\\d+")){
+                            pila.add(Integer.valueOf(value));
+                        }else if(value.length() == 1 && c.isOperator(value.charAt(0))){ //Es operador
+                            //Verifica si hay suficientes operandos en la pila
+                            if(pila.size() < 2){
+                                System.out.println("Error: There are not enough operands in line: " + line);
+                                error = true;
+                                pila.clear();
+                                break;
+                            }
+                            //Obtiene los últimos 2 valores agregados a la pila y el operador a usar
+                            double b = ((Double) pila.pop());
+                            double a = ((Double) pila.pop());
+                            char operator = value.charAt(0);
+                            //En base al operador realiza la operación aritmética requerida
+                            double result;
+                            switch (operator) {
+                                case '+':
+                                    result = c.suma(a, b);
+                                    break;
+                                case '-':
+                                    result = c.resta(a, b);
+                                    break;
+                                case '*':
+                                    result = c.multiplicacion(a, b);
+                                    break;
+                                case '/':
+                                    result = c.division(a, b);
+                                    break;
+                                case '%':
+                                    result = c.modulo(a, b);
+                                    break;
+                                default:
+                                    throw new AssertionError();
+                            }
+                            //Agrega de nuevo el valor a la pila/arraylist/vector
+                            pila.add(result);
+                        }else{
+                            //Si el dato no puede ser operado limpia la pila y no regresa un resultado
+                            System.out.println("Error: Invalid value '" + value + "' in line: " + line);
                             error = true;
                             pila.clear();
                             break;
                         }
-                        //Obtiene los últimos 2 valores agregados a la pila y el operador a usar
-                        double b = ((Double) pila.pop());
-                        double a = ((Double) pila.pop());
-                        char operator = value.charAt(0);
-                        //En base al operador realiza la operación aritmética requerida
-                        double result;
-                        switch (operator) {
-                            case '+':
-                                result = c.suma(a, b);
-                                break;
-                            case '-':
-                                result = c.resta(a, b);
-                                break;
-                            case '*':
-                                result = c.multiplicacion(a, b);
-                                break;
-                            case '/':
-                                result = c.division(a, b);
-                                break;
-                            case '%':
-                                result = c.modulo(a, b);
-                                break;
-                            default:
-                                throw new AssertionError();
+                    }
+                    if (!error){    //La operación fue ser efectuada sin problemas
+                        if (pila.size() == 1) {
+                            System.out.println("The result of the line (" + line + ") is: " + pila.pop());
+                        } else { // Hay más de un elemento en la stack y no hay más operadores
+                            System.out.println("Error: There is no single final result on the stack for the line: " + line);
                         }
-                        //Agrega de nuevo el valor a la pila/arraylist/vector
-                        pila.add(result);
-                    }else{
-                        //Si el dato no puede ser operado limpia la pila y no regresa un resultado
-                        System.out.println("Error: Invalid value '" + value + "' in line: " + line);
-                        error = true;
-                        pila.clear();
-                        break;
                     }
-                }
-                if (!error){    //La operación fue ser efectuada sin problemas
-                    if (pila.size() == 1) {
-                        System.out.println("The result of the line (" + line + ") is: " + pila.pop());
-                    } else { // Hay más de un elemento en la stack y no hay más operadores
-                        System.out.println("Error: There is no single final result on the stack for the line: " + line);
-                    }
-                }
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
