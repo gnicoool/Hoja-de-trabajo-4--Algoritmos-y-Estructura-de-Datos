@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class AL<T extends Comparable<T>> implements IStack<T> {
+public class AL<T extends Number> implements IStack<T> {
     private ArrayList<T> pila = new ArrayList<T>();
 
     @Override
@@ -9,10 +9,20 @@ public class AL<T extends Comparable<T>> implements IStack<T> {
     }
 
     @Override
-    public T delete() {
+    public void clear() { 
+        getPila().clear();
+    }
+
+    @Override
+    public T pop() {
     T value = getPila().get(getPila().size()-1);
     getPila().remove(getPila().size()-1);
-    return value; 
+    return value;
+    }
+
+    @Override
+    public int size() {
+        return getPila().size();
     }
 
     public ArrayList<T> getPila(){
