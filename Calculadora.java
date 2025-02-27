@@ -18,8 +18,7 @@ public class Calculadora<T extends Number> {
             if(operator == operador) return true;
         return false;
     }
-
-    //Operaciones aritmeticas
+    //Operaciones aritmeticas básicas
     public double suma(T value1, T value2){
         return value1.doubleValue() + value2.doubleValue();
     }
