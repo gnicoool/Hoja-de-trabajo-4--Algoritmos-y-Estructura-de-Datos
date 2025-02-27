@@ -1,4 +1,6 @@
-public interface IStack<T extends Comparable<T>> {
+public interface IStack<T extends Number> {
     public void add(T value);
-    public T delete();
+    public void clear();
+    public T pop();
+    public int size();
 }
