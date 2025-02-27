@@ -1,3 +1,9 @@
+/*
+ * Tarea: Hoja de trabajo 4
+    Curso: Algoritmos y estructuras de datos
+    Alumnos: Avilés, Alejandra (24722); Girón, Jackelyn (24737); Tan, Sergio (24759)
+    Fecha de creación: 21/02/2025
+ */
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
