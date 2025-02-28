@@ -25,8 +25,8 @@ public class Main {
         //Mensaje de bienvenida e instrucciones para el usuario
         System.out.println("Calculo de expresiones postfix");
         System.out.println("Seleccione el tipo de estructura a usar");
-        for(int i = 0; i<operadores.length; i++){
-            System.out.println(i+ ") " + operadores[i]);
+        for(int i = 0; i<estructuras.length; i++){
+            System.out.println(i+ ") " + estructuras[i]);
         }
         int opcion = sc.nextInt();
         //Llamada a la funcion operaciones para la realización de calculos
@@ -57,7 +57,7 @@ public class Main {
                     for(String value : data){
                         //Revisa si el dato es un número es positivo
                         if(value.matches("\\d+")){
-                            pila.add(Integer.valueOf(value));
+                            pila.add(Double.valueOf(value));
                         }else if(value.length() == 1 && c.isOperator(value.charAt(0))){ //Es operador
                             //Verifica si hay suficientes operandos en la pila
                             if(pila.size() < 2){
@@ -66,33 +66,48 @@ public class Main {
                                 pila.clear();
                                 break;
                             }
+                            System.out.println(pila.size());
                             //Obtiene los últimos 2 valores agregados a la pila y el operador a usar
-                            double b = ((Double) pila.pop());
-                            double a = ((Double) pila.pop());
+                            double b = (double) pila.pop();
+                            double a = (double) pila.pop();
                             char operator = value.charAt(0);
+                            if ((operator == '/') && (a == 0 || b == 0 || a == 0 && b == 0)){
+                                System.out.println("Error: Division by zero in line: " + line);
+                                error = true;
+                                pila.clear();
+                                break;
+                                }
+    
+                                // Manejo de modulo por 0
+                                if ((operator == '%') && (a == 0 || b == 0 || a == 0 && b == 0)){
+                                    System.out.println("Error: Modulo by zero in line: " + line);
+                                error = true;
+                                pila.clear();
+                                break;
+                            }
                             //En base al operador realiza la operación aritmética requerida
                             double result;
                             switch (operator) {
                                 case '+':
                                     result = c.suma(a, b);
                                     break;
-                                case '-':
+                                    case '-':
                                     result = c.resta(a, b);
                                     break;
-                                case '*':
+                                    case '*':
                                     result = c.multiplicacion(a, b);
                                     break;
-                                case '/':
+                                    case '/':
                                     result = c.division(a, b);
                                     break;
-                                case '%':
+                                    case '%':
                                     result = c.modulo(a, b);
                                     break;
-                                default:
+                                    default:
                                     throw new AssertionError();
-                            }
-                            //Agrega de nuevo el valor a la pila/arraylist/vector
-                            pila.add(result);
+                                }
+                                //Agrega de nuevo el valor a la pila/arraylist/vector
+                                pila.add(result);
                         }else{
                             //Si el dato no puede ser operado limpia la pila y no regresa un resultado
                             System.out.println("Error: Invalid value '" + value + "' in line: " + line);
