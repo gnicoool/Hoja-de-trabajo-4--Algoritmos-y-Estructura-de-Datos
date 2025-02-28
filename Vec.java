@@ -28,9 +28,9 @@ public class Vec<T extends Number> implements IStack<T> {
         if (size <= 0){
             return null;
         }
+        size--;
         T value = pila[size];
         pila[size] = null;
-        size--;
         return value;
     }
 
