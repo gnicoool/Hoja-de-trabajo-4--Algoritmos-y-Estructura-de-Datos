@@ -5,14 +5,13 @@ public class StackFactory {
         //Dependiendo el string enviado, crea estructura de datos lineal distinta
         switch (pila) {
             case "arraylist":
-                return new AL<Integer>();
+                return new AL<Double>();
             case "vector":
                 return new Vec(capacity);
-            //Casos de las demás pilas AÚN SIN IMPLEMENTAR
-            /*case "listaSimple":
-                return new listaSimple();
+            case "listaSimple":
+                return new ListaSimple();
             case "listaDoble":
-                return new listaDoble(); */
+                return new ListaDoble();
             default:
                 throw new ClassNotFoundException("No se encontró una clase con este nombre");
         }
