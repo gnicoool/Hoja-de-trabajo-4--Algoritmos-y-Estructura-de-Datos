@@ -66,7 +66,6 @@ public class Main {
                                 pila.clear();
                                 break;
                             }
-                            System.out.println(pila.size());
                             //Obtiene los últimos 2 valores agregados a la pila y el operador a usar
                             double b = (double) pila.pop();
                             double a = (double) pila.pop();
