@@ -22,15 +22,22 @@ public class Main {
     
     public static void main(String[] args) throws ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
+        boolean menu = true;
         //Mensaje de bienvenida e instrucciones para el usuario
         System.out.println("Calculo de expresiones postfix");
-        System.out.println("Seleccione el tipo de estructura a usar");
-        for(int i = 0; i<estructuras.length; i++){
-            System.out.println(i+ ") " + estructuras[i]);
+        while(menu == true){
+            System.out.println("Seleccione el tipo de estructura a usar");
+            for(int i = 0; i<estructuras.length; i++){
+                System.out.println(i+ ") " + estructuras[i]);
+            }
+            System.out.println("4) Salir");
+            int opcion = sc.nextInt();
+            //Llamada a la funcion operaciones para la realización de calculos
+            if(opcion == 4)
+                menu = false;
+            else
+                operaciones(archivo, estructuras[opcion]);
         }
-        int opcion = sc.nextInt();
-        //Llamada a la funcion operaciones para la realización de calculos
-        operaciones(archivo, estructuras[opcion]);
         sc.close();
     }
             
