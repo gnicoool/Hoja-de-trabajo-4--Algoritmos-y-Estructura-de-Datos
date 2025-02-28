@@ -33,7 +33,7 @@ public class Calculadora<T extends Number> {
 
     public double division(T value1, T value2){
         if(value2.doubleValue() != 0)
-            return value1.doubleValue() * value2.doubleValue();
+            return value1.doubleValue() / value2.doubleValue();
         throw new ArithmeticException("No se puede realizar una división entre 0");
     }
 
